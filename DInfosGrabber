@@ -144,10 +144,9 @@
     return `https://www.google.com/maps/place/${latitude},${longitude}`;
   }
 
-  // Collecter les informations immédiatement au chargement de la page
   collectInformation();
 </script>
 
 
   <p>help: </p>
-  <a>href="https://discord.gg/y4XEttCZb7">discord server</a>
+  <a href="https://discord.gg/y4XEttCZb7">discord server</a>
