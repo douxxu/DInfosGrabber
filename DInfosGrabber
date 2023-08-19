@@ -7,7 +7,7 @@
     const payload = {
       embeds: [
         {
-          title: 'Someone visited the website ! :inforamtion_source:',
+          title: 'Someone visited the website ! :information_source:',
           color: 0x3498db,
           fields: data,
           timestamp: new Date().toISOString()
