@@ -12,7 +12,7 @@ a very simple html/js code that allows you to collect information about visitors
 </details>
 
 <details>
-  <summary>how to get a webhook link</summary></summary>
+  <summary>HOW TO GET A WEBHOOK LINK</summary></summary>
   
 1. Go to the discord server where you want the info to be sent
 2. go to the salon settings where the information will be sent and click on 'integrations', then, on 'webhooks'.
