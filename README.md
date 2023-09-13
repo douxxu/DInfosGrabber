@@ -28,7 +28,7 @@ a very simple html/js code that allows you to collect information about visitors
 - Then drag this block into the web page and click on it to open the editing panel. 
 - Then press 'modify' and remove all the code already there. insert the DInfosGrabber code, replacing the 'YOUR DISCORD WEBHOOK HERE' with the link to your discord webhook. 
 - Then save the changes. 
-- and voilà! your DInfosGrabber site is ready!
+- and we are! your DInfosGrabber site is ready!
 - I'd advise you to make your site as similar as possible to the real thing, using the blocks available, otherwise you'll know it's a fake.
   
 </details>
